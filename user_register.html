@@ -1,0 +1,63 @@
+<!--用户注册-->
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>雾之湖</title>
+		<meta charset="utf8">
+		<link rel="stylesheet" href="css/user_register.css">
+	</head>
+	<body>
+		<img src="image/01.jpg" alt="加载失败" width="100%">
+		<div class="register">
+			<h2>用户注册</h2>
+			<form>
+				<table>
+					<tr>
+						<td valign="top">账号:</td>
+						<td>
+							<input type="text" name="uname" style="height:20px" id="uname">
+						</td>
+					</tr>
+					<tr>
+						<td valign="top">密码:</td>
+						<td><input type="text" name="upwd" style="height:20px" id="upwd"></td>
+					</tr>
+					<tr>
+						<td valign="top">邮箱:</td>
+						<td><input type="text" name="email" style="height:20px" id="email"></td>
+					</tr>
+					<tr>
+						<td>
+							<br>
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="2" align="center">
+							<input type="button" value="点击注册" style="background:#339AFF;color:#FFFFFF;width:170px;height:30px" onclick="getMsg()">
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script>
+			function getMsg(){
+				var xhr=new XMLHttpRequest();
+				xhr.onreadystatechange=function (){
+					if(xhr.readyState==4&&xhr.status==200){
+						var result=xhr.responseText;
+						if(result=="1"){
+							alert("注册成功");
+							window.location="http://127.0.0.1:3000";
+						};
+					};
+				};
+				xhr.open("post","/user/register",true);
+				xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+				var formdate="&uname="+uname.value+"&upwd="+upwd.value+"&email="+email.value;
+				console.log(formdate);
+				xhr.send(formdate);
+			};
+		</script>
+	</body>
+</html>
