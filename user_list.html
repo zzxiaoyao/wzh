@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+	<head>
+		<style>
+			a{
+				text-decoration:none;
+			}
+			#list{
+				background:#C4BFC9;
+				opacity:0.70;
+				border:1px solid none;
+				display:inline-block;
+				position:absolute;
+				top:30%;
+				left:25%;
+			}
+		</style>
+		<title>雾之湖</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="css/user_list.css">
+	</head>
+	<body class="bg">
+		<div id="list" class="bg">
+			<h3>用户列表</h3>
+			<table>
+				<tr>
+					<td>页码；</td>
+					<td>
+						<input type="text" name="pno" id="pno">
+					</td>
+				</tr>
+				<tr>
+					<td>数量；</td>
+					<td>
+						<input type="text" name="count" id="count">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="right">
+						<input type="button" value="点击查看" onclick="getMsg()">
+					</td>
+				</tr>
+			</table>
+			<table border="1px">
+				<thead>
+					<th>用户编号</th>
+					<th>用户名称</th>
+					<th>用户密码</th>
+					<th>用户性别</th>
+					<th>用户邮箱</th>
+					<th>用户头像</th>
+					<th>用户签名</th>
+					<th>更多操作</th>
+				</thead>
+				<tbody id="content" align="center"></tbody>
+			</table>
+		</div>
+			<script>
+				function getMsg(){
+					var xhr=new XMLHttpRequest();
+					xhr.onreadystatechange=function (){
+						if(xhr.readyState==4&&xhr.status==200){
+							var result=xhr.responseText;
+							var arr=JSON.parse(result);
+							var html="";
+							for(var i=0;i<arr.length;i++){
+								html+="<tr>";
+								html+="<td>"+arr[i].uid+"</td>";
+								html+="<td>"+arr[i].uname+"</td>";
+								html+="<td>"+arr[i].upwd+"</td>";
+								var gender;
+								if(arr[i].sex==0){
+									gender="男";
+								}else if(arr[i].sex==1){
+									gender="女";
+								}else{
+									gender="保密";
+								};
+								html+="<td>"+gender+"</td>";
+								html+="<td>"+arr[i].email+"</td>";
+								var img;
+								if(arr[i].portrait=="0"){
+									img="未设置头像";
+								}else{
+									img="<img src='"+arr[i].portrait+"' alt='图片错误' width='100px'>";
+								};
+								html+="<td>"+img+"</td>";
+								html+="<td>"+arr[i].intro+"</td>";
+								html+="<td>";
+								html+="<a href='?uid="+arr[i].uid+"'>更新&nbsp;&nbsp;</a>";
+								html+="<a href='JavaScript:deluser("+arr[i].uid+")'>删除</a>";
+								html+="</td>";
+								html+="</tr>"
+							};							
+							content.innerHTML=html;
+						};
+					};
+					xhr.open("get","/user/list?pno="+pno.value+"&count="+count.value,true);
+					xhr.send(null);
+				};
+			</script>	
+	</body>
+</html>
